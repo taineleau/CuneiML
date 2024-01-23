@@ -45,6 +45,8 @@ We also provide a `CuneiML_unicode.json` file to directly access the Cuneiform U
 
 ### Code
 
-`get_cutouts`: the code to get major face cutouts. We only release the code and bounding boxes.
+We also release the code to get the cutouts/unicode for new data that not includes in the current selection of dataset.
+
+`get_cutouts`: the code to get major face cutouts.  Please refer to `get_cutouts/README.md` for details.
 
 `cuneiform_unicode`: the code to convert transliteration (in ATF) to cuneiform unicode.
