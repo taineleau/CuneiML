@@ -1,6 +1,7 @@
 from sklearn.cluster import KMeans
 import numpy as np
 from scipy.signal import find_peaks
+from PIL import Image
 
 def peak_base(img_url, viz=False):
     img = Image.open(img_url)
@@ -11,6 +12,7 @@ def peak_base(img_url, viz=False):
     col_sum = np.sum(arr_grey, axis=0)
     x = col_sum.max() - col_sum
     peaks, _ = find_peaks(x)
+    
     filter_peaks = []
     for p in peaks:
         # print(p, x.max() * 0.9)
