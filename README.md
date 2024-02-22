@@ -61,6 +61,28 @@ The `raw` field is the transliteration obtained from CDLI and the `sign` field i
 
 Note that around 1% of the cuneiform Unicode is not convert automatically.
 
+
+We stored the text by their faces (i.e. `observe`, `reserve`, `left`, `right`, ...). To collaspe the data into pure text of Unicode or transliteration, here is the example to get pure text of tablet `131837`:
+
+```python
+import json
+data = json.load("./CuneiML_V1.2.json")
+CDLI_id = 131837 
+unicode = []
+transliteration = []
+for face in data[CDLI_id]['text']:
+   for line in data[CDLI_id]['text'][face]:
+      if 'raw' in line:
+         transliteration.append(line['raw'])
+      else:
+         transliteration.append('<B>') # broken line
+      if 'sign' in line:
+         unicode.append(line['sign'])
+      else:
+         unicode.append('<B>')
+```
+
+
 ### Getting the cutouts
 
 1. Downlad the images on your own the photographs of each table from CDLI. `P100001.jpg` is the photograph of Tablet `id=100001`. For example:
