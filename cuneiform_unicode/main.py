@@ -1,6 +1,7 @@
 import re
 import json
 import pickle as pkl
+import fire
 
 
 def get_token_mapping(token_path="./token.tsv", token_path2="./token.tsv"):
@@ -39,6 +40,7 @@ s_tokens = ['<B>', # borken
             "<disz>",
             "x", # uknown signs
             ]
+
 from collections import Counter
 vocab_freq = Counter()
 new_tokens = Counter()
@@ -49,12 +51,21 @@ def remove_at(x):
     if x.endswith("@c)") or x.endswith("@t)"):
         return x[:-3] + ")"
 
-
+def remove_spaces(x):
+    new_x = []
+    for item in x:
+        if item == "<S>" and new_x[-1] == '<S>':
+            continue
+        new_x.append(item)
+    return new_x
 
 def tokenize(raw_text, info={}):
     token_text = {"default": []}
     curr_face = "default"
-    for line in raw_text.split("\n"):
+    sep = '\n'
+    if '\\n' in raw_text:
+        sep = '\\n'
+    for line in raw_text.split(sep):
         line = line.strip()
         # print(line)
         if line.startswith("&") or line.startswith("'&"):
@@ -63,7 +74,7 @@ def tokenize(raw_text, info={}):
         elif line.startswith("#atf"):
             info['lang'] = line.split("lang ")[-1].strip()
             langs[info['lang']] += 1
-            if info['lang'] in ['sux', 'akk', 'sux, akk']:
+            if info['lang'] in ['sux', 'akk', 'sux, akk', 'akk _sux']:
                 continue
             else:
                 # do not process those not sum or akk
@@ -119,6 +130,7 @@ def tokenize(raw_text, info={}):
             # print("\t\t>>>", line)
             line = line.split(". ")
             
+            # print(line)
             if len(line) >= 2:
                 # make sure only leading line number is split
                 if len(line) > 2:
@@ -161,6 +173,7 @@ def tokenize(raw_text, info={}):
                                 if len(t.strip()) > 0:
                                     new_tokens[t] += 1
                                 # print(t)
+                    signs = remove_spaces(signs)
                     token_text[curr_face].append({'raw': text, 
                                                   'num': line_num, 
                                                   "sign": signs
@@ -177,18 +190,4 @@ def get_text(data, idx):
 
 
 if __name__ == "__main__":
-
-    data = pkl.load(open("/trunk2/datasets/cuneiform/raw_data.pkl", 'rb'))
-    image_anno = json.load(open("/trunk2/datasets/cuneiform/image_anno.json"))
-    
-    new_image_anno = {}
-
-    for idx in image_anno:
-        if 'text' in image_anno[idx]:
-            raw_text = get_text(data, int(idx))
-            new_image_anno[int(idx)] = tokenize(raw_text)
-
-
-
-
-
+  fire.Fire(tokenize)
