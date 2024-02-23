@@ -37,7 +37,9 @@ the `CuneiML_V1.2.json` is a list of dict as below:
  'id': 131837,
  'img_url': 'https://cdli.mpiwg-berlin.mpg.de/dl/photo/P131837.jpg',    # link to photo
  'lineart': 'https://cdli.mpiwg-berlin.mpg.de/dl/lineart/P131837_l.jpg',# link to lineart
- 'bboxes': ((204.0, 200.0), (523.0, 522.0)),                               # the bounding box
+ # the bounding box, [[x_1, y_1], [x_2, y_2]]
+ # where (x_1, y_1) is the left upper vertex and (x_2, y_2) is the lower right vertex of the bounding box of the cutout
+ 'bboxes': [[204.0, 200.0], [523.0, 522.0]],                            
  'text': {
    'obverse': [
       {'raw': '2(gesz2) 4(asz) 2(barig) 4(disz) sila3 gur',
@@ -54,15 +56,16 @@ the `CuneiML_V1.2.json` is a list of dict as below:
        'num': '1',
        'sign': ['𒈬', '𒊭', '𒀸', '𒊒', '𒆠', '𒁀', '𒅆𒌨']}]
    }
+'geo': 'Umma (mod. Tell Jokha)',
+'time': 'Ur III (ca. 2100-2000 BC)',
+'genre': 'Administrative',
 }
 ```
-
-The `raw` field is the transliteration obtained from CDLI and the `sign` field is the Cuneiform Unicode of the lines. The `num` field is from CDLI's line label.
 
 Note that around 1% of the cuneiform Unicode is not convert automatically.
 
 
-We stored the text by their faces (i.e. `observe`, `reserve`, `left`, `right`, ...). To collaspe the data into pure text of Unicode or transliteration, here is the example to get pure text of tablet `131837`:
+We stored the text by their faces (i.e. `observe`, `reserve`, `left`, `right`, ...). The `raw` field is the transliteration obtained from CDLI and the `sign` field is the Cuneiform Unicode of the lines. The `num` field is from CDLI's line label. To collaspe the data into pure text of Unicode or transliteration, here is the example to get pure text of tablet `131837`:
 
 ```python
 import json
@@ -102,11 +105,12 @@ def download_image(url, filename):
 download_image(url="https://cdli.mpiwg-berlin.mpg.de/dl/photo/P131837.jpg", filename="P131837.jpg")
 ```
 
-2. Cut the image using the PIL package:
+2. Cut the image using the PIL package using the bounding box:
    ```python
     from PIL import Image
     im = Image.open("P131837.jpg")
-    im.crop((204.0, 200.0, 523.0, 522.0)).save("P131837_cut.jpg")
+    # the crop command requires a 4-item tuple (x1, y1, x2, y2) to indicate the bounding box for the cropping operation. 
+    im.crop((204.0, 200.0, 523.0, 522.0)).save("P131837_cutout.jpg")
    ```
 
 
