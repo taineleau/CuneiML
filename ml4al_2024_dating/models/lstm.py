@@ -165,7 +165,6 @@ class CustomTextDataset(Dataset):
         import copy
         text = copy.copy(text_tensor)
         N = len(text)
-        # print(N)
         # if self.split == 'train' :
         if args.line < 0:
             # sample a segment from the full docs
@@ -190,7 +189,6 @@ def collate(batch):
     texts = pad_sequence(texts, batch_first=True,
                          padding_value=train_dataset.vocab['<pad>'])
     labels = torch.LongTensor(labels)
-    # print(texts, labels)
     return texts, labels, seg_ids
 
 
