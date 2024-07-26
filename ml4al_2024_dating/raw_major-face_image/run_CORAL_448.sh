@@ -1,0 +1,1 @@
+python examples/run_expt.py --dataset iwildcam --algorithm deepCORAL --model resnet50 --batch_size 32 --root_dir data --lr 3e-5 --weight_decay 0.0 --n_epochs 30 --target_resolution 448 448 --seed 2 --log_dir ./logs/t23_front_resnet_50_bs_32_res_448_CORAL_lr_3e-5_weight_decay_0_seed_2_n_epochs_30 

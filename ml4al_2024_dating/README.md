@@ -28,5 +28,9 @@ python draw/scatter.py
 
 ![image-20240725114709381](assets/image-20240725114709381.png)
 
+## Correlation Alignment for Deep Domain Adaptation (CORAL) and Invariant Risk Minimization (IRM)
+
+Please refer to raw_major-face_image.
+
 ## Citation
 
